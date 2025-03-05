@@ -1,0 +1,14 @@
+{
+    "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json", 
+    "AuthorDetails": {
+      "Name": "Owain Williams",
+      "ImageUrl": "https://github.com/WildSite Creations.png"
+    },
+    "Category": "",
+    "Description": "",
+    "LicenseTypes": [ "Free" ],
+    "IssueTrackerUrl": "https://github.com/WildSite Creations/WSC.UmbCare/issues",
+    "PackageType": "Package",
+    "Tags": [],
+    "Title": "WSC.Umb Care "
+  }

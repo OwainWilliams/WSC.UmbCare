@@ -1,0 +1,14 @@
+{
+  "id": "WSC.UmbCare",
+  "name": "WSC.UmbCare",
+  "version": "0.0.0",
+  "allowPackageTelemetry": true,
+  "extensions": [
+    {
+      "name": "WSCUmb Care Bundle",
+      "alias": "WSC.UmbCare.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/WSCUmbCare/wsc-umb-care.js"
+    }
+  ]
+}
