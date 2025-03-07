@@ -10,7 +10,7 @@ const a = [
     name: "WSCUmb Care Dashboard",
     alias: "WSC.UmbCare.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-DHE8BxEb.js"),
+    js: () => import("./dashboard.element-hJTavXBG.js"),
     meta: {
       label: "Example Dashboard",
       pathname: "example-dashboard"

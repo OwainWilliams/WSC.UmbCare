@@ -4,6 +4,7 @@ import { WSCUmbCareService, UserModel } from "../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 import { UMB_CURRENT_USER_CONTEXT, UmbCurrentUserModel } from "@umbraco-cms/backoffice/current-user";
+import { startBreathingAnimation } from '../scripts/breathing-animation';
 
 @customElement('example-dashboard')
 export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
@@ -20,6 +21,10 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
   @state()
   private _contextCurrentUser: UmbCurrentUserModel | undefined = undefined;
 
+  @state()
+  private _showModal: boolean = false;
+
+
   constructor() {
     super();
 
@@ -35,8 +40,10 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
       this.observe(currentUserContext.currentUser, (currentUser) => {
         this._contextCurrentUser = currentUser;
       });
-    });
+    });  
   }
+
+
 
   #notificationContext: UmbNotificationContext | undefined = undefined;
 
@@ -89,7 +96,10 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
   #onClickWhatsMyName = async (ev: Event) => {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
+    this._showModal = true;
 
+    setTimeout(() => startBreathingAnimation(this.shadowRoot!), 1);
+    
     const { data, error } = await WSCUmbCareService.whatsMyName();
 
     if (error) {
@@ -119,7 +129,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
 
         <uui-box headline="What's my Name?">
             <div slot="header">[Server]</div>
-            <h2><uui-icon name="icon-user"></uui-icon> ${this._yourName }</h2>
+            <h2><uui-icon name="icon-user"></uui-icon> ${this._yourName}</h2>
             <uui-button color="default" look="primary" @click="${this.#onClickWhatsMyName}">
                 Whats my name?
             </uui-button>
@@ -141,6 +151,22 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
           <p>This is the JSON object available by consuming the 'UMB_CURRENT_USER_CONTEXT' context:</p>
           <umb-code-block language="json" copy>${JSON.stringify(this._contextCurrentUser, null, 2)}</umb-code-block>
         </uui-box>
+
+        ${this._showModal ? html`
+         <div class="modal">
+  <div class="modal-content">
+      <div class="countdown">It's time to breathe</div>
+    <div class="container">
+        <div class="breath-box">
+            <div class="box-countdown">4</div>
+        </div>
+        <div class="ball"></div>
+    </div>
+    <div class="breath-text">Inhale</div>
+  </div>
+</div>
+
+        ` : ''}
     `;
   }
 
@@ -164,6 +190,107 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
             .wide {
                 grid-column: span 3;
             }
+
+             .modal {
+                display: block;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0,0.4);
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 40%;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                    .container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+         .breath-box {
+            width: 100px;
+            height: 100px;
+            background-color: lightblue;
+            border-radius: 10px;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: darkblue;
+        }
+
+        .ball {
+            width: 20px;
+            height: 20px;
+            background-color: darkblue;
+            border-radius: 50%;
+            position: absolute;
+            animation: roll 16s infinite;
+            animation-play-state: paused;
+        }
+
+
+        @keyframes roll {
+            0% {
+                top: 0;
+                left: 0;
+            }
+            25% {
+                top: 0;
+                left: 80px;
+            }
+            50% {
+                top: 80px;
+                left: 80px;
+            }
+            75% {
+                top: 80px;
+                left: 0;
+            }
+            100% {
+                top: 0;
+                left: 0;
+            }
+        }
+
+        .breath-text {
+            font-size: 1.2em;
+            color: darkblue;
+        }
+
+        .countdown {
+            font-size: 2em;
+            color: darkblue;
+            margin-bottom: 20px;
+        }
+
     `];
 }
 
