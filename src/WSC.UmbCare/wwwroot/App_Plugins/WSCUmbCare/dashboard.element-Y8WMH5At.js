@@ -1,40 +1,43 @@
-import { LitElement, css, html, customElement } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import { UMB_MODAL_MANAGER_CONTEXT, UmbModalManagerContext } from "@umbraco-cms/backoffice/modal";
-import { MY_MODAL_TOKEN } from "../breathcounter/breathing-countdown-modal.token";
-
-
-@customElement('example-dashboard')
-export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
-
-  #modalManagerContext?: UmbModalManagerContext;
-
+import { LitElement as c, html as u, css as h, customElement as m } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
+import { UmbModalToken as f, UMB_MODAL_MANAGER_CONTEXT as x } from "@umbraco-cms/backoffice/modal";
+const b = new f("breath-modal", {
+  modal: {
+    type: "dialog",
+    size: "small"
+  }
+});
+var v = Object.getOwnPropertyDescriptor, d = (t) => {
+  throw TypeError(t);
+}, _ = (t, e, o, l) => {
+  for (var a = l > 1 ? void 0 : l ? v(e, o) : e, n = t.length - 1, s; n >= 0; n--)
+    (s = t[n]) && (a = s(a) || a);
+  return a;
+}, p = (t, e, o) => e.has(t) || d("Cannot " + o), k = (t, e, o) => (p(t, e, "read from private field"), e.get(t)), y = (t, e, o) => e.has(t) ? d("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, o), w = (t, e, o, l) => (p(t, e, "write to private field"), e.set(t, o), o), r;
+let i = class extends g(c) {
   constructor() {
-    super();
-
-    this.consumeContext(UMB_MODAL_MANAGER_CONTEXT, (instance) => {
-      this.#modalManagerContext = instance;
+    super(), y(this, r), this._triggerModal = () => {
+      var t;
+      (t = k(this, r)) == null || t.open(this, b, {
+        data: {
+          headline: "my headline"
+        }
+      });
+    }, this.consumeContext(x, (t) => {
+      w(this, r, t);
     });
   }
-
-  private _triggerModal = () => {
-    this.#modalManagerContext?.open(this, MY_MODAL_TOKEN, {
-      data: {
-        headline: 'my headline'
-      }
-    });
-  }
-
   render() {
-    return html`
+    return u`
   
   <uui-button look="primary" color="positive" id="openModal" label="Close" @click="${this._triggerModal}">Open modal</uui-button>
 
     `;
   }
-
-  static styles = [
-    css`
+};
+r = /* @__PURE__ */ new WeakMap();
+i.styles = [
+  h`
             :host {
                 display: grid;
                 gap: var(--uui-size-layout-1);
@@ -154,13 +157,14 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
             margin-bottom: 20px;
         }
 
-    `];
-}
-
-export default ExampleDashboardElement;
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'example-dashboard': ExampleDashboardElement;
-  }
-}
+    `
+];
+i = _([
+  m("example-dashboard")
+], i);
+const C = i;
+export {
+  i as ExampleDashboardElement,
+  C as default
+};
+//# sourceMappingURL=dashboard.element-Y8WMH5At.js.map

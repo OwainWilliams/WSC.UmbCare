@@ -1,36 +1,27 @@
-import { LitElement, css, html, customElement } from "@umbraco-cms/backoffice/external/lit";
+import { LitElement, html, customElement, css } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import { UMB_MODAL_MANAGER_CONTEXT, UmbModalManagerContext } from "@umbraco-cms/backoffice/modal";
-import { MY_MODAL_TOKEN } from "../breathcounter/breathing-countdown-modal.token";
+import { startBreathingAnimation } from '../scripts/breathing-animation';
 
+@customElement('my-typescript-element')
 
-@customElement('example-dashboard')
-export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
+export default class MyTypeScriptElement extends UmbElementMixin(LitElement) {
 
-  #modalManagerContext?: UmbModalManagerContext;
-
-  constructor() {
-    super();
-
-    this.consumeContext(UMB_MODAL_MANAGER_CONTEXT, (instance) => {
-      this.#modalManagerContext = instance;
-    });
-  }
-
-  private _triggerModal = () => {
-    this.#modalManagerContext?.open(this, MY_MODAL_TOKEN, {
-      data: {
-        headline: 'my headline'
-      }
-    });
+  connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => startBreathingAnimation(this.shadowRoot!), 4000);
   }
 
   render() {
     return html`
-  
-  <uui-button look="primary" color="positive" id="openModal" label="Close" @click="${this._triggerModal}">Open modal</uui-button>
-
-    `;
+            <div class="countdown">It's time to breathe</div>
+                  <div class="container">
+                <div class="breath-box">
+                <div class="box-countdown">4</div>
+              </div>
+        <div class="ball"></div>
+    </div>
+    <div class="breath-text">Inhale</div>
+        `;
   }
 
   static styles = [
@@ -157,10 +148,8 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     `];
 }
 
-export default ExampleDashboardElement;
-
 declare global {
   interface HTMLElementTagNameMap {
-    'example-dashboard': ExampleDashboardElement;
+    'my-typescript-element': MyTypeScriptElement;
   }
 }

@@ -1,40 +1,40 @@
-import { LitElement, css, html, customElement } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import { UMB_MODAL_MANAGER_CONTEXT, UmbModalManagerContext } from "@umbraco-cms/backoffice/modal";
-import { MY_MODAL_TOKEN } from "../breathcounter/breathing-countdown-modal.token";
-
-
-@customElement('example-dashboard')
-export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
-
-  #modalManagerContext?: UmbModalManagerContext;
-
-  constructor() {
-    super();
-
-    this.consumeContext(UMB_MODAL_MANAGER_CONTEXT, (instance) => {
-      this.#modalManagerContext = instance;
-    });
+import { LitElement as c, html as d, css as u, customElement as p } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as b } from "@umbraco-cms/backoffice/element-api";
+function m(e) {
+  const r = e.querySelector(".countdown"), a = e.querySelector(".ball"), i = e.querySelector(".breath-text"), t = e.querySelector(".box-countdown");
+  r.textContent = "It's time to breathe";
+  const o = ["Inhale", "Hold", "Exhale", "Hold"];
+  let n = 0, l = 4;
+  i.textContent = o[n], t.textContent = l.toString(), setInterval(() => {
+    n = (n + 1) % o.length, i.textContent = o[n], l = 5, t.textContent = l.toString(), a.style.animationPlayState = "running";
+  }, 4e3), setInterval(() => {
+    l > 0 && (l--, t.textContent = l.toString());
+  }, 1e3);
+}
+var x = Object.getOwnPropertyDescriptor, h = (e, r, a, i) => {
+  for (var t = i > 1 ? void 0 : i ? x(r, a) : r, o = e.length - 1, n; o >= 0; o--)
+    (n = e[o]) && (t = n(t) || t);
+  return t;
+};
+let s = class extends b(c) {
+  connectedCallback() {
+    super.connectedCallback(), setTimeout(() => m(this.shadowRoot), 4e3);
   }
-
-  private _triggerModal = () => {
-    this.#modalManagerContext?.open(this, MY_MODAL_TOKEN, {
-      data: {
-        headline: 'my headline'
-      }
-    });
-  }
-
   render() {
-    return html`
-  
-  <uui-button look="primary" color="positive" id="openModal" label="Close" @click="${this._triggerModal}">Open modal</uui-button>
-
-    `;
+    return d`
+            <div class="countdown">It's time to breathe</div>
+                  <div class="container">
+                <div class="breath-box">
+                <div class="box-countdown">4</div>
+              </div>
+        <div class="ball"></div>
+    </div>
+    <div class="breath-text">Inhale</div>
+        `;
   }
-
-  static styles = [
-    css`
+};
+s.styles = [
+  u`
             :host {
                 display: grid;
                 gap: var(--uui-size-layout-1);
@@ -154,13 +154,9 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
             margin-bottom: 20px;
         }
 
-    `];
-}
-
-export default ExampleDashboardElement;
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'example-dashboard': ExampleDashboardElement;
-  }
-}
+    `
+];
+s = h([
+  p("my-typescript-element")
+], s);
+//# sourceMappingURL=breathing-countdown-BK6c2s_0.js.map
