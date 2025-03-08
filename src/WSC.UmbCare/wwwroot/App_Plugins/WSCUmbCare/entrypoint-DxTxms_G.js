@@ -2,7 +2,7 @@ var U = Object.defineProperty;
 var S = (s, n, r) => n in s ? U(s, n, { enumerable: !0, configurable: !0, writable: !0, value: r }) : s[n] = r;
 var g = (s, n, r) => S(s, typeof n != "symbol" ? n + "" : n, r);
 import { UMB_AUTH_CONTEXT as T } from "@umbraco-cms/backoffice/auth";
-import "./breathing-countdown-DROL5i6F.js";
+import "./breathing-countdown-DgocN1ko.js";
 var A = /\{[^{}]+\}/g, y = ({ allowReserved: s, name: n, value: r }) => {
   if (r == null) return "";
   if (typeof r == "object") throw new Error("Deeply-nested arrays/objects aren’t supported. Provide your own `querySerializer()` to handle these.");
@@ -206,4 +206,4 @@ export {
   M as onInit,
   X as onUnload
 };
-//# sourceMappingURL=entrypoint-dMKvpKPR.js.map
+//# sourceMappingURL=entrypoint-DxTxms_G.js.map

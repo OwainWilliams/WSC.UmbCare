@@ -21,20 +21,20 @@ export class breathModal extends UmbModalBaseElement<MyModalData, MyModalValue>{
       if (modalButton) {
         modalButton.disabled = false;
       }
-    }, 4000);
+    }, this.data?.disableForSeconds);
   }
 
   render() {
     return html`
     <umb-body-layout headline="${this.data?.headline}">
+    <breath-square-element></breath-square-element>
 
-        <breath-square-element></breath-square-element>
+    <div slot="actions">
+        <uui-button look="primary" color="positive" id="closeModal" @click="${this.handleClose}" disabled="true">Close</uui-button>
+    </div>
 
-<div slot="actions">
-  <uui-button look="primary" color="positive" id="closeModal" @click="${this.handleClose}" disabled="true">Close</uui-button>
-</div>
-      </umb-body-layout>
-         `;
+    </umb-body-layout>
+    `;
   }
 
 }

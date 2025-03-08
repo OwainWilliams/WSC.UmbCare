@@ -20,7 +20,8 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
   private _triggerModal = () => {
     this.#modalManagerContext?.open(this, BREATH_MODAL_TOKEN, {
       data: {
-        headline: 'Relaxation time'
+        headline: 'Relaxation time',
+        disableForSeconds: 30000
       }
     });
   }

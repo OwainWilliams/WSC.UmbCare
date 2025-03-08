@@ -1,18 +1,26 @@
-import { LitElement, html, customElement, css } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import { startBreathingAnimation } from '../scripts/breathing-animation';
-
-@customElement('breath-square-element')
-
-export default class BreathSquareElement extends UmbElementMixin(LitElement) {
-
+import { LitElement as d, html as p, css as x, customElement as b } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as u } from "@umbraco-cms/backoffice/element-api";
+function m(n) {
+  const a = n.querySelector(".ball"), i = n.querySelector(".breath-text"), l = n.querySelector(".box-countdown"), e = ["Breathe In", "Hold", "Breathe Out", "Hold"];
+  let o = 0, t = 4;
+  const s = () => {
+    o = (o + 1) % e.length, i.textContent = e[o], t = 5, l.textContent = t.toString(), a.style.animationPlayState = "running";
+  }, c = () => {
+    t > 0 && (t--, l.textContent = t.toString());
+  };
+  i.textContent = e[o], l.textContent = t.toString(), setInterval(s, 4e3), setInterval(c, 1e3);
+}
+var h = Object.getOwnPropertyDescriptor, f = (n, a, i, l) => {
+  for (var e = l > 1 ? void 0 : l ? h(a, i) : a, o = n.length - 1, t; o >= 0; o--)
+    (t = n[o]) && (e = t(e) || e);
+  return e;
+};
+let r = class extends u(d) {
   connectedCallback() {
-    super.connectedCallback();
-    setTimeout(() => startBreathingAnimation(this.shadowRoot!), 2000);
+    super.connectedCallback(), setTimeout(() => m(this.shadowRoot), 2e3);
   }
-
   render() {
-    return html`
+    return p`
     <div class="container">
       <div class="countdown"></div>
       <div class="breath-box">
@@ -23,9 +31,9 @@ export default class BreathSquareElement extends UmbElementMixin(LitElement) {
     </div>
         `;
   }
-
-  static styles = [
-    css`
+};
+r.styles = [
+  x`
             .container {
             position: relative;
             width: 300px;
@@ -93,11 +101,9 @@ export default class BreathSquareElement extends UmbElementMixin(LitElement) {
             margin-bottom: 20px;
         }
 
-    `];
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'breath-square-element': BreathSquareElement;
-  }
-}
+    `
+];
+r = f([
+  b("breath-square-element")
+], r);
+//# sourceMappingURL=breathing-countdown-DgocN1ko.js.map

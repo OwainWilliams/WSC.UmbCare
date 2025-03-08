@@ -2,6 +2,7 @@ import { UmbModalToken } from "@umbraco-cms/backoffice/modal";
 
 export type MyModalData = {
   headline: string;
+  disableForSeconds: number;
 }
 
 export type MyModalValue = {
@@ -10,7 +11,6 @@ export type MyModalValue = {
 
 export const BREATH_MODAL_TOKEN = new UmbModalToken<MyModalData, MyModalValue>('breath-modal', {
   modal: {
-    type: 'dialog',
-    size: 'small'
+    type: 'dialog'
   }
 });
