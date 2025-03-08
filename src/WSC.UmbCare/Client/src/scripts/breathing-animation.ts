@@ -1,11 +1,9 @@
 export function startBreathingAnimation(target:ShadowRoot) {
 
-  const countdownElement = target.querySelector('.countdown') as HTMLDivElement;
   const ballElement = target.querySelector('.ball') as HTMLDivElement;
   const textElement = target.querySelector('.breath-text') as HTMLDivElement;
   const boxCountdownElement = target.querySelector('.box-countdown') as HTMLDivElement;
 
-countdownElement.textContent = "It's time to breathe";
 
   const phases = ["Inhale", "Hold", "Exhale", "Hold"];
   let phaseIndex = 0;

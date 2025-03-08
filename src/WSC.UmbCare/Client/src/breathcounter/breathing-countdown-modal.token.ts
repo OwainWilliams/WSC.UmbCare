@@ -8,7 +8,7 @@ export type MyModalValue = {
   myData: string;
 }
 
-export const MY_MODAL_TOKEN = new UmbModalToken<MyModalData, MyModalValue>('breath-modal', {
+export const BREATH_MODAL_TOKEN = new UmbModalToken<MyModalData, MyModalValue>('breath-modal', {
   modal: {
     type: 'dialog',
     size: 'small'

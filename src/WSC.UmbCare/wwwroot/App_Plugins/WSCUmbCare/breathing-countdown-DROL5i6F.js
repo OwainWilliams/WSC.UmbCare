@@ -1,43 +1,38 @@
-import { LitElement as c, html as u, css as h, customElement as m } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
-import { UmbModalToken as f, UMB_MODAL_MANAGER_CONTEXT as x } from "@umbraco-cms/backoffice/modal";
-const b = new f("breath-modal", {
-  modal: {
-    type: "dialog",
-    size: "small"
-  }
-});
-var v = Object.getOwnPropertyDescriptor, d = (t) => {
-  throw TypeError(t);
-}, _ = (t, e, o, l) => {
-  for (var a = l > 1 ? void 0 : l ? v(e, o) : e, n = t.length - 1, s; n >= 0; n--)
-    (s = t[n]) && (a = s(a) || a);
-  return a;
-}, p = (t, e, o) => e.has(t) || d("Cannot " + o), k = (t, e, o) => (p(t, e, "read from private field"), e.get(t)), y = (t, e, o) => e.has(t) ? d("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, o), w = (t, e, o, l) => (p(t, e, "write to private field"), e.set(t, o), o), r;
-let i = class extends g(c) {
-  constructor() {
-    super(), y(this, r), this._triggerModal = () => {
-      var t;
-      (t = k(this, r)) == null || t.open(this, b, {
-        data: {
-          headline: "my headline"
-        }
-      });
-    }, this.consumeContext(x, (t) => {
-      w(this, r, t);
-    });
+import { LitElement as s, html as d, css as c, customElement as u } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as p } from "@umbraco-cms/backoffice/element-api";
+function b(n) {
+  const r = n.querySelector(".ball"), a = n.querySelector(".breath-text"), l = n.querySelector(".box-countdown"), e = ["Inhale", "Hold", "Exhale", "Hold"];
+  let o = 0, t = 4;
+  a.textContent = e[o], l.textContent = t.toString(), setInterval(() => {
+    o = (o + 1) % e.length, a.textContent = e[o], t = 5, l.textContent = t.toString(), r.style.animationPlayState = "running";
+  }, 4e3), setInterval(() => {
+    t > 0 && (t--, l.textContent = t.toString());
+  }, 1e3);
+}
+var x = Object.getOwnPropertyDescriptor, m = (n, r, a, l) => {
+  for (var e = l > 1 ? void 0 : l ? x(r, a) : r, o = n.length - 1, t; o >= 0; o--)
+    (t = n[o]) && (e = t(e) || e);
+  return e;
+};
+let i = class extends p(s) {
+  connectedCallback() {
+    super.connectedCallback(), setTimeout(() => b(this.shadowRoot), 2e3);
   }
   render() {
-    return u`
-  
-  <uui-button look="primary" color="positive" id="openModal" label="Close" @click="${this._triggerModal}">Open modal</uui-button>
-
-    `;
+    return d`
+    <div class="container">
+            <div class="countdown"></div>
+              <div class="breath-box">
+                  <div class="box-countdown">4</div>
+                  <div class="ball"></div>
+              </div>
+            <div class="breath-text"></div>
+            </container>
+        `;
   }
 };
-r = /* @__PURE__ */ new WeakMap();
 i.styles = [
-  h`
+  c`
             :host {
                 display: grid;
                 gap: var(--uui-size-layout-1);
@@ -149,6 +144,8 @@ i.styles = [
         .breath-text {
             font-size: 1.2em;
             color: darkblue;
+            padding-top: 120px;
+            text-align: center;
         }
 
         .countdown {
@@ -159,12 +156,7 @@ i.styles = [
 
     `
 ];
-i = _([
-  m("example-dashboard")
+i = m([
+  u("breath-square-element")
 ], i);
-const C = i;
-export {
-  i as ExampleDashboardElement,
-  C as default
-};
-//# sourceMappingURL=dashboard.element-Y8WMH5At.js.map
+//# sourceMappingURL=breathing-countdown-DROL5i6F.js.map

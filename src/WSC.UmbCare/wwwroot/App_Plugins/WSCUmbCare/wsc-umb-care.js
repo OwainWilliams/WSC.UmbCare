@@ -3,14 +3,14 @@ const a = [
     name: "WSCUmb Care Entrypoint",
     alias: "WSC.UmbCare.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-DPxP_2Uy.js")
+    js: () => import("./entrypoint-dMKvpKPR.js")
   }
 ], t = [
   {
     name: "WSCUmb Care Dashboard",
     alias: "WSC.UmbCare.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-Y8WMH5At.js"),
+    js: () => import("./dashboard.element-qkpvgvqh.js"),
     meta: {
       label: "Example Dashboard",
       pathname: "example-dashboard"
@@ -26,7 +26,7 @@ const a = [
   type: "modal",
   alias: "breath-modal",
   name: "Breath Modal",
-  js: () => import("./breath-modal.element-C_ho94L_.js")
+  js: () => import("./breath-modal.element-C-fxEk_I.js")
 }, e = [o], n = [
   ...a,
   ...t,

@@ -2,25 +2,25 @@ import { LitElement, html, customElement, css } from "@umbraco-cms/backoffice/ex
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import { startBreathingAnimation } from '../scripts/breathing-animation';
 
-@customElement('my-typescript-element')
+@customElement('breath-square-element')
 
-export default class MyTypeScriptElement extends UmbElementMixin(LitElement) {
+export default class BreathSquareElement extends UmbElementMixin(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    setTimeout(() => startBreathingAnimation(this.shadowRoot!), 4000);
+    setTimeout(() => startBreathingAnimation(this.shadowRoot!), 2000);
   }
 
   render() {
     return html`
-            <div class="countdown">It's time to breathe</div>
-                  <div class="container">
-                <div class="breath-box">
-                <div class="box-countdown">4</div>
+    <div class="container">
+            <div class="countdown"></div>
+              <div class="breath-box">
+                  <div class="box-countdown">4</div>
+                  <div class="ball"></div>
               </div>
-        <div class="ball"></div>
-    </div>
-    <div class="breath-text">Inhale</div>
+            <div class="breath-text"></div>
+            </container>
         `;
   }
 
@@ -137,6 +137,8 @@ export default class MyTypeScriptElement extends UmbElementMixin(LitElement) {
         .breath-text {
             font-size: 1.2em;
             color: darkblue;
+            padding-top: 120px;
+            text-align: center;
         }
 
         .countdown {
@@ -150,6 +152,6 @@ export default class MyTypeScriptElement extends UmbElementMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-typescript-element': MyTypeScriptElement;
+    'breath-square-element': BreathSquareElement;
   }
 }

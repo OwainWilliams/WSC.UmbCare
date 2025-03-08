@@ -1,10 +1,10 @@
-import { customElement, html} from "@umbraco-cms/backoffice/external/lit";
+import { customElement, html } from "@umbraco-cms/backoffice/external/lit";
 import { UmbModalBaseElement, UmbModalRejectReason } from "@umbraco-cms/backoffice/modal";
 import { MyModalData, MyModalValue } from "./breathing-countdown-modal.token";
 import "./breathing-countdown";
 
 @customElement('breath-modal')
-export class breathModel extends UmbModalBaseElement<MyModalData, MyModalValue>{
+export class breathModal extends UmbModalBaseElement<MyModalData, MyModalValue>{
 
   constructor() {
     super();
@@ -14,18 +14,28 @@ export class breathModel extends UmbModalBaseElement<MyModalData, MyModalValue>{
     this.modalContext?.reject({ type: "close" } as UmbModalRejectReason);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => {
+      const modalButton = this.shadowRoot?.getElementById('closeModal') as HTMLButtonElement;
+      if (modalButton) {
+        modalButton.disabled = false;
+      }
+    }, 4000);
+  }
+
   render() {
     return html`
-    <umb-body-layout headline="Relax">
+    <umb-body-layout headline="${this.data?.headline}">
 
-        <my-typescript-element></my-typescript-element>
+        <breath-square-element></breath-square-element>
 
 <div slot="actions">
-  <uui-button look="primary" color="positive" id="closeModal" @click="${this.handleClose}">Close</uui-button>
+  <uui-button look="primary" color="positive" id="closeModal" @click="${this.handleClose}" disabled="true">Close</uui-button>
 </div>
       </umb-body-layout>
          `;
   }
-  
+
 }
-export default breathModel;
+export default breathModal;
