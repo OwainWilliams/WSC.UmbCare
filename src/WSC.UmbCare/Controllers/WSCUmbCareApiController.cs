@@ -1,43 +1,22 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Security;
 
 namespace WSC.UmbCare.Controllers
 {
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "WSC.UmbCare")]
-    public class WSCUmbCareApiController : WSCUmbCareApiControllerBase
+    public class WSCUmbCareApiController(IBackOfficeSecurityAccessor backOfficeSecurityAccessor) : WSCUmbCareApiControllerBase
     {
-        private readonly IBackOfficeSecurityAccessor _backOfficeSecurityAccessor;
-
-        public WSCUmbCareApiController(IBackOfficeSecurityAccessor backOfficeSecurityAccessor)
-        {
-            _backOfficeSecurityAccessor = backOfficeSecurityAccessor;
-        }
-
         [HttpGet("ping")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public string Ping() => "Pong";
 
-        [HttpGet("whatsTheTimeMrWolf")]
-        [ProducesResponseType(typeof(DateTime), 200)]
-        public DateTime WhatsTheTimeMrWolf() => DateTime.Now;
 
-        [HttpGet("whatsMyName")]
+        [HttpGet("last-login")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
-        public string WhatsMyName()
-        {
-            // So we can see a long request in the dashboard with a spinning progress wheel
-            Thread.Sleep(2000);
-
-            var currentUser = _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
-            return currentUser?.Name ?? "I have no idea who you are";
-        }
-
-        [HttpGet("whoAmI")]
-        [ProducesResponseType<IUser>(StatusCodes.Status200OK)]
-        public IUser? WhoAmI() => _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
+        public DateTime? LastLogin()
+          => backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.LastLoginDate;
     }
 }

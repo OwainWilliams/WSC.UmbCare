@@ -3,14 +3,14 @@ const a = [
     name: "WSCUmb Care Entrypoint",
     alias: "WSC.UmbCare.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-DxTxms_G.js")
+    js: () => import("./entrypoint-BcMZGnmm.js")
   }
-], t = [
+], e = [
   {
     name: "WSCUmb Care Dashboard",
     alias: "WSC.UmbCare.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-CEsnvQwy.js"),
+    js: () => import("./dashboard.element-DqAv9Dpy.js"),
     meta: {
       label: "Example Dashboard",
       pathname: "example-dashboard"
@@ -22,17 +22,31 @@ const a = [
       }
     ]
   }
-], o = {
+], t = {
   type: "modal",
   alias: "breath-modal",
   name: "Breath Modal",
   js: () => import("./breath-modal.element-B4n2egmf.js")
-}, e = [o], n = [
+}, n = [t], o = [
+  {
+    type: "headerApp",
+    alias: "WSCUmbCare.HeaderApp",
+    name: "WSCUmbCare Header App",
+    kind: "button",
+    element: () => import("./headerapp.element-DxEaVpwd.js"),
+    meta: {
+      label: "WSCUmbCare",
+      icon: "icon-brain",
+      href: "#"
+    }
+  }
+], m = [
   ...a,
-  ...t,
-  ...e
+  ...e,
+  ...n,
+  ...o
 ];
 export {
-  n as manifests
+  m as manifests
 };
 //# sourceMappingURL=wsc-umb-care.js.map
