@@ -1,31 +1,27 @@
-# WSC.Umb Care 
 
-[![Downloads](https://img.shields.io/nuget/dt/Umbraco.Community.WSC.UmbCare?color=cc9900)](https://www.nuget.org/packages/Umbraco.Community.WSC.UmbCare/)
-[![NuGet](https://img.shields.io/nuget/vpre/Umbraco.Community.WSC.UmbCare?color=0273B3)](https://www.nuget.org/packages/Umbraco.Community.WSC.UmbCare)
-[![GitHub license](https://img.shields.io/github/license/WildSite Creations/WSC.UmbCare?color=8AB803)](../LICENSE)
+<img src="docs/umbCare.png" alt="WSC.UmbCare logo" width="100">
 
-TODO: describe your package
+# WSC.UmbCare
 
-<!--
-Including screenshots is a really good idea! 
+This package was created as part of the Umbraco Spark Hackathon
 
-If you put images into /docs/screenshots, then you would reference them in this readme as, for example:
+The purpose of the package is to add some Mental Health improvements to the backoffice for editors. 
 
-<img alt="..." src="https://github.com/WildSite Creations/WSC.UmbCare/blob/develop/docs/screenshots/screenshot.png">
--->
+Features currently included in the package are : 
 
-## Installation
+- Pomodoro timer
+  - From when you log in, a visual aid counts down from X minutes. After 20 minutes, the breath square appears.
+- Breathe Square
+  - A visual aid to help you relax. The square represents 4 actions you should do. Breath In, Hold, Breath Out, Hold. Each side is 4 seconds.
+- Blue light filter
+  - A basic toggle to allow you to enable or disable a blue light filter over the entire backoffice.
 
-Add the package to an existing Umbraco website (v15+) from nuget:
 
-`dotnet add package Umbraco.Community.WSC.UmbCare`
+Future features
+  - Mental health reading material (links to useful resources)
+  - Working hours checkers - if logging in before 9am or after 6pm (is this needed? popup)
+  - Hydration reminder
+  - Settings Dashboard per user to customise settings e.g. change Pomodoro timer / change bluescreen contrast
+ 
 
-TODO *provide any other instructions for someone using your package*
-
-## Contributing
-
-Contributions to this package are most welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md).
-
-## Acknowledgments
-
-TODO
+Thanks to [Matt Brailsford](https://github.com/mattbrailsford) for kindly donating his time to help me with this project. He build the oringal MindScape App for the countdown.
