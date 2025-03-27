@@ -24,4 +24,4 @@ Future features
   - Settings Dashboard per user to customise settings e.g. change Pomodoro timer / change bluescreen contrast
  
 
-Thanks to [Matt Brailsford](https://github.com/mattbrailsford) for kindly donating his time to help me with this project. He build the oringal MindScape App for the countdown.
+Thanks to [Matt Brailsford](https://github.com/mattbrailsford) for kindly donating his time to help me with this project. He built the oringal MindScape App for the countdown.
