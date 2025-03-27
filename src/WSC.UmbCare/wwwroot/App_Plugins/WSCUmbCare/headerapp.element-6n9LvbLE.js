@@ -1,20 +1,35 @@
-import { UmbHeaderAppButtonElement as h } from "@umbraco-cms/backoffice/components";
-import { html as m, css as g, state as p, customElement as v } from "@umbraco-cms/backoffice/external/lit";
-import { W as k } from "./services.gen-BHDE9gha.js";
-import { UMB_ACTION_EVENT_CONTEXT as u } from "@umbraco-cms/backoffice/action";
-var f = Object.defineProperty, w = Object.getOwnPropertyDescriptor, d = (t) => {
+import { UmbHeaderAppButtonElement as m } from "@umbraco-cms/backoffice/components";
+import { html as k, css as f, state as d, customElement as u } from "@umbraco-cms/backoffice/external/lit";
+import { W as w } from "./services.gen-BHDE9gha.js";
+import { UMB_ACTION_EVENT_CONTEXT as C } from "@umbraco-cms/backoffice/action";
+import { UmbModalToken as E, UMB_MODAL_MANAGER_CONTEXT as M } from "@umbraco-cms/backoffice/modal";
+const b = new E("headerapp-modal", {
+  modal: {
+    type: "sidebar"
+  }
+});
+var B = Object.defineProperty, x = Object.getOwnPropertyDescriptor, g = (t) => {
   throw TypeError(t);
-}, o = (t, e, r, i) => {
-  for (var s = i > 1 ? void 0 : i ? w(e, r) : e, n = t.length - 1, l; n >= 0; n--)
-    (l = t[n]) && (s = (i ? l(e, r, s) : l(s)) || s);
-  return i && s && f(e, r, s), s;
-}, b = (t, e, r) => e.has(t) || d("Cannot " + r), C = (t, e, r) => e.has(t) ? d("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, r), E = (t, e, r) => (b(t, e, "access private method"), r), c, _;
-let a = class extends h {
+}, n = (t, e, r, i) => {
+  for (var a = i > 1 ? void 0 : i ? x(e, r) : e, l = t.length - 1, c; l >= 0; l--)
+    (c = t[l]) && (a = (i ? c(e, r, a) : c(a)) || a);
+  return i && a && B(e, r, a), a;
+}, h = (t, e, r) => e.has(t) || g("Cannot " + r), T = (t, e, r) => (h(t, e, "read from private field"), e.get(t)), _ = (t, e, r) => e.has(t) ? g("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, r), y = (t, e, r, i) => (h(t, e, "write to private field"), e.set(t, r), r), A = (t, e, r) => (h(t, e, "access private method"), r), o, p, v;
+let s = class extends m {
   constructor() {
-    super(), C(this, c), this._progress = 0, this._breakInterval = 14e4, this.consumeContext(u, (t) => {
+    super(), _(this, p), _(this, o), this._progress = 0, this._breakInterval = 14e4, this._triggerModal = () => {
+      var t;
+      (t = T(this, o)) == null || t.open(this, b, {
+        data: {
+          headline: "Relaxation time"
+        }
+      });
+    }, this.consumeContext(C, (t) => {
       this._actionEventContext = t, this._actionEventContext.addEventListener("mindscape-break-complete", () => {
         this._lastBreak = /* @__PURE__ */ new Date(), console.log("Break complete");
       });
+    }), this.consumeContext(M, (t) => {
+      y(this, o, t);
     });
   }
   set _lastBreak(t) {
@@ -50,7 +65,7 @@ let a = class extends h {
     clearInterval(this._timer);
   }
   async _getLastLogin() {
-    const { data: t, error: e } = await k.lastLogin();
+    const { data: t, error: e } = await w.lastLogin();
     if (e) {
       console.error(e);
       return;
@@ -67,8 +82,8 @@ let a = class extends h {
     (t = this._actionEventContext) == null || t.dispatchEvent(new CustomEvent("mindscape-break"));
   }
   render() {
-    return m`
-			<button @click=${E(this, c, _)}>
+    return k`
+			<button @click=${A(this, p, v)}>
         <svg id="progress-bar" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" class="${this._progress >= 100 ? "pulse" : ""}">
           <circle id="bg" cx="50%" cy="50%" r="18.5" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"></circle>
           <circle id="progress" cx="50%" cy="50%" r="18.5" fill="none" stroke="currentColor" stroke-width="1.5" style="transform-origin: 50% 50%; rotate: 90deg; stroke-dasharray: ${this._progress / 100 * 115}, 115; stroke-linecap: round; transition: stroke-dasharray 120ms;"></circle>
@@ -78,13 +93,14 @@ let a = class extends h {
 		`;
   }
 };
-c = /* @__PURE__ */ new WeakSet();
-_ = function() {
-  this._dispatchBreakEvent();
+o = /* @__PURE__ */ new WeakMap();
+p = /* @__PURE__ */ new WeakSet();
+v = function() {
+  console.log("Break button clicked"), this._triggerModal(), this._dispatchBreakEvent();
 };
-a.styles = [
-  h.styles,
-  g`
+s.styles = [
+  m.styles,
+  f`
       :host {
       }
       button {
@@ -127,21 +143,21 @@ a.styles = [
       }
     `
 ];
-o([
-  p()
-], a.prototype, "_lastLogin", 2);
-o([
-  p()
-], a.prototype, "_lastBreak", 1);
-o([
-  p()
-], a.prototype, "_progress", 2);
-a = o([
-  v("mindscape-header-app")
-], a);
-const M = a;
+n([
+  d()
+], s.prototype, "_lastLogin", 2);
+n([
+  d()
+], s.prototype, "_lastBreak", 1);
+n([
+  d()
+], s.prototype, "_progress", 2);
+s = n([
+  u("mindscape-header-app")
+], s);
+const I = s;
 export {
-  a as HeaderAppElement,
-  M as default
+  s as HeaderAppElement,
+  I as default
 };
-//# sourceMappingURL=headerapp.element-DxEaVpwd.js.map
+//# sourceMappingURL=headerapp.element-6n9LvbLE.js.map

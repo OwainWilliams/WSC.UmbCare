@@ -3,7 +3,7 @@ const a = [
     name: "WSCUmb Care Entrypoint",
     alias: "WSC.UmbCare.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-BcMZGnmm.js")
+    js: () => import("./entrypoint-CDySAYsf.js")
   }
 ], e = [
   {
@@ -27,26 +27,32 @@ const a = [
   alias: "breath-modal",
   name: "Breath Modal",
   js: () => import("./breath-modal.element-B4n2egmf.js")
-}, n = [t], o = [
+}, o = [t], n = {
+  type: "modal",
+  alias: "headerapp-modal",
+  name: "Headerapp Modal",
+  js: () => import("./headerapp-modal.element-BpxtRvsF.js")
+}, m = [n], s = [
   {
     type: "headerApp",
     alias: "WSCUmbCare.HeaderApp",
     name: "WSCUmbCare Header App",
     kind: "button",
-    element: () => import("./headerapp.element-DxEaVpwd.js"),
+    element: () => import("./headerapp.element-6n9LvbLE.js"),
     meta: {
       label: "WSCUmbCare",
       icon: "icon-brain",
       href: "#"
     }
   }
-], m = [
+], i = [
   ...a,
   ...e,
-  ...n,
-  ...o
+  ...o,
+  ...m,
+  ...s
 ];
 export {
-  m as manifests
+  i as manifests
 };
 //# sourceMappingURL=wsc-umb-care.js.map

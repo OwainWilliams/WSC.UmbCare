@@ -2,6 +2,7 @@ import { UmbEntryPointOnInit, UmbEntryPointOnUnload } from '@umbraco-cms/backoff
 import { UMB_AUTH_CONTEXT } from '@umbraco-cms/backoffice/auth';
 import { client } from '../api';
 import '../breathcounter/breathing-countdown';
+import '../headerapp/headerapp';
 
 
 // load up the manifests here

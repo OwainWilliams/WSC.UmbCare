@@ -1,7 +1,8 @@
 import { UMB_AUTH_CONTEXT as a } from "@umbraco-cms/backoffice/auth";
 import { c as o } from "./services.gen-BHDE9gha.js";
 import "./breathing-countdown-DgocN1ko.js";
-const _ = (e, s) => {
+import "./headerapp-DJ-iQBa8.js";
+const f = (e, s) => {
   e.consumeContext(a, async (i) => {
     const t = i.getOpenApiConfiguration();
     o.setConfig({
@@ -12,10 +13,10 @@ const _ = (e, s) => {
       return n.headers.set("Authorization", `Bearer ${r}`), n;
     });
   });
-}, f = (e, s) => {
+}, l = (e, s) => {
 };
 export {
-  _ as onInit,
-  f as onUnload
+  f as onInit,
+  l as onUnload
 };
-//# sourceMappingURL=entrypoint-BcMZGnmm.js.map
+//# sourceMappingURL=entrypoint-CDySAYsf.js.map
