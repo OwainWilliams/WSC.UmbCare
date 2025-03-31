@@ -19,7 +19,9 @@ export class HeaderAppModal
     return html`
     <umb-body-layout headline="It's a modal, but not as you know it!">
 				<uui-box>
-        Something here
+        <uui-toggle pristine="" label="Disable Countdown"></uui-toggle>
+        <br />
+        <uui-toggle pristine="" label="Blue light filter"></uui-toggle>
         </uui-box>
         	<div slot="actions">
             <uui-button id="close" label="Close" @click="${this._rejectModal}">Close</uui-button>
