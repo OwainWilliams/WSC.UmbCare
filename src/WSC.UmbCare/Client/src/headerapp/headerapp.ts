@@ -1,31 +1,38 @@
-import { LitElement, html, customElement, css } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
+import { customElement, html } from "@umbraco-cms/backoffice/external/lit";
+import { UmbModalBaseElement} from "@umbraco-cms/backoffice/modal";
+import { HeaderAppModalData, HeaderAppModalValue } from "./headerapp-modal.token.ts";
 
 @customElement('headerapp-element')
 
-export default class HeaderAppElement extends UmbElementMixin(LitElement) {
+export class HeaderAppModal
+  extends UmbModalBaseElement<HeaderAppModalData, HeaderAppModalValue>{
 
-  render() {
-    return html`
-    <div class="container">
-      <h1>test</h1>
-    </div>
-        `;
+  constructor() {
+    super();
+   }
+
+  connectedCallback() {
+    super.connectedCallback();
   }
 
-  static styles = [
-    css`
-            .container {
-            position: relative;
-            width: 300px;
-            height: 100px;
-            margin-bottom: 20px;
-        }
-    `];
+  override render() {
+    return html`
+    <umb-body-layout headline="It's a modal, but not as you know it!">
+				<uui-box>
+        Something here
+        </uui-box>
+        	<div slot="actions">
+            <uui-button id="close" label="Close" @click="${this._rejectModal}">Close</uui-button>
+				</div>
+      </umb-body-layout>
+        `;
+  }
 }
+
+export default HeaderAppModal;
 
 declare global {
   interface HTMLElementTagNameMap {
-    'headerapp-element': HeaderAppElement;
+    'headerapp-element': HeaderAppModal;
   }
 }
