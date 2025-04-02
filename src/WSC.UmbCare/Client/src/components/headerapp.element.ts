@@ -1,35 +1,25 @@
 import { UmbHeaderAppButtonElement } from "@umbraco-cms/backoffice/components";
 import { css, customElement, html, state } from "@umbraco-cms/backoffice/external/lit";
-import { WSCUmbCareService } from "../api";
+/*import { WSCUmbCareService } from "../api";*/
 import { UMB_ACTION_EVENT_CONTEXT, UmbActionEventContext } from "@umbraco-cms/backoffice/action";
 import { UMB_MODAL_MANAGER_CONTEXT, UmbModalManagerContext } from "@umbraco-cms/backoffice/modal";
 import { HEADERAPP_MODAL_TOKEN } from "../headerapp/headerapp-modal.token";
+import { BREATH_MODAL_TOKEN } from "../breathcounter/breathing-countdown-modal.token";
 
 @customElement('mindscape-header-app')
 export class HeaderAppElement extends UmbHeaderAppButtonElement {
 
   private _actionEventContext: UmbActionEventContext | undefined;
   #modalManagerContext?: UmbModalManagerContext;
-
-  @state()
-  private _lastLogin: Date | undefined;
-
-  @state()
-  private set _lastBreak(value: Date) {
-    localStorage.setItem("mindscape_lastbreak", value.toUTCString());
-  }
-
-  private get _lastBreak(): Date | undefined {
-    const lastBreak = localStorage.getItem("mindscape_lastbreak");
-    return lastBreak ? new Date(lastBreak) : undefined;
-  }
-
+  
   @state()
   private _progress: number = 0;
 
-  private _breakInterval: number = 140000; // 15 minutes in milliseconds (900000)
+  private _breakInterval: number = 60000; // 15 minutes in milliseconds (900000)
 
   private _timer: number | undefined;
+
+  private _lastBreak = new Date(); 
 
   constructor() {
     super();
@@ -37,8 +27,6 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
       this._actionEventContext = actionEventContext;
       this._actionEventContext.addEventListener('mindscape-break-complete', () => {
         this._lastBreak = new Date();
-        // this._startTimer();
-        console.log('Break complete');
       });
     }),
       this.consumeContext(UMB_MODAL_MANAGER_CONTEXT, (instance) => {
@@ -46,10 +34,19 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
       });
   }
 
-  private _triggerModal = () => {
-    this.#modalManagerContext?.open(this, HEADERAPP_MODAL_TOKEN, {
+  private _triggerBreathModal = () => {
+    this.#modalManagerContext?.open(this, BREATH_MODAL_TOKEN, {
       data: {
         headline: 'Relaxation time',
+        disableForSeconds: 30000
+      }
+    });
+  }
+
+  private _triggerSettingsModal = () => {
+    this.#modalManagerContext?.open(this, HEADERAPP_MODAL_TOKEN, {
+      data: {
+        headline: 'Settings',
       }
     });
   }
@@ -65,8 +62,10 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
   }
 
   private async _initTimer() {
-    this._lastLogin = await this._getLastLogin() || new Date();
-    if (!this._lastBreak || this._lastLogin > this._lastBreak) this._lastBreak = this._lastLogin;
+    if (this._progress >= 100) {
+      this._lastBreak = new Date();
+      this._progress = 0;
+    }
     this._startTimer();
   }
 
@@ -75,7 +74,10 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
       const prevProgress = this._progress;
       this._updateProgress();
       if (prevProgress < 100 && this._progress >= 100) {
-        this._dispatchBreakEvent();
+        this._clearTimer();
+        this._triggerBreathModal();
+        this._actionEventContext?.dispatchEvent(new CustomEvent('mindscape-break'));
+      
       }
     }, 1000);
   }
@@ -90,35 +92,18 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
 
   private _clearTimer() {
     clearInterval(this._timer);
+    this._progress = 0;
   }
 
-  private async _getLastLogin() {
-    const { data, error } = await WSCUmbCareService.lastLogin();
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    if (data !== undefined) {
-      return new Date(data);
-    }
-  }
-
+  
   private _updateProgress() {
     const now = new Date();
     const diff = now.getTime() - this._lastBreak!.getTime();
     this._progress = Math.min((diff / this._breakInterval) * 100, 100);
   }
 
-  private _dispatchBreakEvent() {
-    this._actionEventContext?.dispatchEvent(new CustomEvent('mindscape-break'));
-  }
-
   #onClick() {
-    console.log('Break button clicked');
-    this._triggerModal();
-    this._dispatchBreakEvent();
+    this._triggerSettingsModal();
   }
 
   override render() {
