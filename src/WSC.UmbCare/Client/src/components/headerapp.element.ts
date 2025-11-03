@@ -11,7 +11,7 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
 
   private _actionEventContext: UmbActionEventContext | undefined;
   #modalManagerContext?: UmbModalManagerContext;
-  
+
   @state()
   private _progress: number = 0;
 
@@ -19,13 +19,13 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
 
   private _timer: number | undefined;
 
-  private _lastBreak = new Date(); 
+  private _lastBreak = new Date();
 
   constructor() {
     super();
     this.consumeContext(UMB_ACTION_EVENT_CONTEXT, (actionEventContext) => {
       this._actionEventContext = actionEventContext;
-      this._actionEventContext.addEventListener('mindscape-break-complete', () => {
+      this._actionEventContext?.addEventListener('mindscape-break-complete', () => {
         this._lastBreak = new Date();
       });
     }),
@@ -33,6 +33,15 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
         this.#modalManagerContext = instance;
       });
   }
+  private _onCountdownToggleChanged = (event: CustomEvent) => {
+    const { disabled } = event.detail;
+    if (disabled) {
+      this._clearTimer();
+      this._progress = 0;
+    } else {
+      this._initTimer();
+    }
+  };
 
   private _triggerBreathModal = () => {
     this.#modalManagerContext?.open(this, BREATH_MODAL_TOKEN, {
@@ -54,12 +63,10 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
   public connectedCallback() {
     super.connectedCallback();
     this._initTimer();
+    window.addEventListener('headerapp-modal-closed', this._onModalClosed);
+
   }
 
-  public disconnectedCallback() {
-    super.disconnectedCallback();
-    this._clearTimer();
-  }
 
   private async _initTimer() {
     if (this._progress >= 100) {
@@ -69,6 +76,20 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
     this._startTimer();
   }
 
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    this._clearTimer();
+
+    window.removeEventListener('headerapp-modal-closed', this._onModalClosed);
+  }
+
+  private _onModalClosed = () => {
+    this._lastBreak = new Date();
+    this._progress = 0;
+    this._clearTimer();
+    this._initTimer();
+  };
+
   private _startTimer() {
     this._timer = setInterval(() => {
       const prevProgress = this._progress;
@@ -77,25 +98,21 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
         this._clearTimer();
         this._triggerBreathModal();
         this._actionEventContext?.dispatchEvent(new CustomEvent('mindscape-break'));
-      
+
       }
     }, 1000);
   }
 
-  // private _isDueBreak()
-  // {
-  //   if (!this._lastBreak) return false;
-  //   const now = new Date();
-  //   const diff = now.getTime() - this._lastBreak.getTime();
-  //   return diff >= this._breakInterval;
-  // }
 
   private _clearTimer() {
-    clearInterval(this._timer);
+    if (this._timer) {
+      clearInterval(this._timer);
+      this._timer = undefined;
+    }
     this._progress = 0;
   }
 
-  
+
   private _updateProgress() {
     const now = new Date();
     const diff = now.getTime() - this._lastBreak!.getTime();
@@ -119,7 +136,6 @@ export class HeaderAppElement extends UmbHeaderAppButtonElement {
   }
 
   static override styles = [
-    UmbHeaderAppButtonElement.styles,
     css`
       :host {
       }

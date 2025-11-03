@@ -4,12 +4,12 @@ using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Web.Common.Authorization;
 using Umbraco.Cms.Web.Common.Routing;
 
-namespace WSC.UmbCare.Controllers
+namespace Client.Controllers
 {
     [ApiController]
-    [BackOfficeRoute("wscumbcare/api/v{version:apiVersion}")]
+    [BackOfficeRoute("client/api/v{version:apiVersion}")]
     [MapToApi(Constants.ApiName)]
-    public class WSCUmbCareApiControllerBase : ControllerBase
+    public class ClientApiControllerBase : ControllerBase
     {
     }
 }

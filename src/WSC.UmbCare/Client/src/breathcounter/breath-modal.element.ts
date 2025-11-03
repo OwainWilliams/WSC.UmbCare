@@ -1,5 +1,5 @@
 import { customElement, html } from "@umbraco-cms/backoffice/external/lit";
-import { UmbModalBaseElement, UmbModalRejectReason } from "@umbraco-cms/backoffice/modal";
+import { UmbModalBaseElement } from "@umbraco-cms/backoffice/modal";
 import { MyModalData, MyModalValue } from "./breathing-countdown-modal.token";
 import "./breathing-countdown";
 
@@ -11,7 +11,8 @@ export class breathModal extends UmbModalBaseElement<MyModalData, MyModalValue>{
   }
 
   private handleClose() {
-    this.modalContext?.reject({ type: "close" } as UmbModalRejectReason);
+    window.dispatchEvent(new CustomEvent('headerapp-modal-closed'));
+    this._rejectModal();
   }
 
   connectedCallback() {

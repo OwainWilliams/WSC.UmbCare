@@ -1,103 +1,183 @@
-import { customElement, html } from "@umbraco-cms/backoffice/external/lit";
+import { customElement, html, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbModalBaseElement } from "@umbraco-cms/backoffice/modal";
 import { HeaderAppModalData, HeaderAppModalValue } from "../headerapp/headerapp-modal.token";
+import { umbHttpClient } from "@umbraco-cms/backoffice/http-client";
+
+interface SettingsApiContext {
+  getDisableCountdownSetting(): Promise<boolean>;
+  setDisableCountdownSetting(disabled: boolean): Promise<void>;
+}
 
 @customElement('headerapp-modal')
 export class headerappModal extends UmbModalBaseElement<HeaderAppModalData, HeaderAppModalValue>{
+
+  @state()
+  private _isDisableCountdownChecked = false;
+
+  @state()
+  private _isLoading = true;
+
+  private _settingsApi: SettingsApiContext;
+
   constructor() {
     super();
+
+    // Initialize the API context
+    this._settingsApi = {
+      getDisableCountdownSetting: async (): Promise<boolean> => {
+        try {
+          const response = await umbHttpClient.get({
+            url: '/umbraco/wscumbcare/api/v1/settings/disable-countdown'
+          });
+
+          if (response.error) {
+            console.error('API Error:', response.error);
+            throw new Error('Failed to fetch setting');
+          }
+
+          // Your C# API returns a plain boolean value
+          return response.data === true;
+        } catch (error) {
+          console.error('GET request failed:', error);
+          throw error;
+        }
+      },
+
+      setDisableCountdownSetting: async (disabled: boolean): Promise<void> => {
+        try {
+
+          console.log('Sending request body:', { Disabled: disabled }); // Debug log
+
+          const response = await umbHttpClient.post({
+            url: '/umbraco/wscumbcare/api/v1/settings/disable-countdown',
+            body: JSON.stringify({ Disabled: disabled }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          console.log('Response received:', response); // Debug log
+
+
+          if (response.error) {
+            console.error('API Error:', response.error);
+            throw new Error('Failed to save setting');
+          }
+        } catch (error) {
+          console.error('POST request failed:', error);
+          throw error;
+        }
+      }
+    };
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
+    await this._loadSettings();
   }
 
-  private _isBluescreenOn = false;
+  private async _loadSettings() {
+    try {
+      this._isLoading = true;
+      this._isDisableCountdownChecked = await this._settingsApi.getDisableCountdownSetting();
+    } catch (error) {
+      console.error('Failed to load settings:', error);
+      // Set a default value on error
+      this._isDisableCountdownChecked = false;
+    } finally {
+      this._isLoading = false;
+    }
+  }
 
   async #onSubmit(e: SubmitEvent) {
     e.preventDefault();
 
-    if (!this.data) throw new Error('No data provided');
-
     const form = e.target as HTMLFormElement;
+    console.log('Form submitted:', form.checkValidity());
 
     if (!form.checkValidity()) return;
+    console.log('Form is valid, proceeding to save settings...', this._isDisableCountdownChecked);
 
-    const formData = new FormData(form);
+    try {
+      // Save the setting to the KeyValue table
+      await this._settingsApi.setDisableCountdownSetting(this._isDisableCountdownChecked);
 
-    const disableCountdown = formData.get('disableCountdown') as string;
-    const disableBreathing = formData.get('disableBreathing') as string;
+      console.log(this._isDisableCountdownChecked ? "Countdown disabled and saved" : "Countdown enabled and saved");
 
-    disableCountdown == "on" ? console.log("disable countdown") : console.log("enable countdown");
+      // Close the modal after saving
+      this._submitModal();
 
-    if (disableBreathing == "on" || disableBreathing == null) {
-      this._triggerBluescreen();
+    } catch (error) {
+      console.error('Failed to save setting:', error);
+      // You could show an error notification here
     }
-
-    const code = formData.get('code') as string;
-
-    if (!code) return;
-
   }
-
-  private _triggerBluescreen = () => {
-    console.log("bluescreen button");
-    const body = document.body;
-    if (this._isBluescreenOn) {
-      body.style.filter = '';
-      body.style.backgroundColor = '';
-      body.style.color = '';
-    } else {
-      body.style.filter = 'hue-rotate(180deg)';
-      body.style.backgroundColor = 'blue';
-      body.style.color = 'white';
-    }
-    this._isBluescreenOn = !this._isBluescreenOn;
-    this.requestUpdate();
-  }
-
-
 
   override render() {
+    if (this._isLoading) {
+      return html`
+        <umb-body-layout headline="Loading settings...">
+          <uui-box>
+            <uui-loader></uui-loader>
+          </uui-box>
+          <div slot="actions">
+            <uui-button id="close" label="Close" @click="${this._closeModel}" look="secondary" color="default">Close me</uui-button>
+          </div>
+        </umb-body-layout>
+      `;
+    }
+
     return html`
-    <umb-body-layout headline="It's a modal, but not as you know it!">
-				<uui-box>
-        <uui-form>
-        <form id="umbCareSettingsForm" name="authForm" @submit=${this.#onSubmit} novalidate>
-         <uui-form-layout-item>
-            <uui-toggle pristine="" label="Disable Countdown" name="disableCountdown"></uui-toggle>
-        </uui-form-layout-item>
+      <umb-body-layout headline="WSC UmbCare Settings">
+        <uui-box>
+          <uui-form>
+            <form id="umbCareSettingsForm" name="settingsForm" @submit=${this.#onSubmit} novalidate>
+              <uui-form-layout-item>Disable Countdown Feature
+                <uui-toggle 
+                  label="Disable Countdown" 
+                  name="disableCountdown" 
+                  ?checked=${this._isDisableCountdownChecked}
+                  @change=${this._onToggleChange}>
+                </uui-toggle>
+              </uui-form-layout-item>
 
-        <uui-form-layout-item>
-            <uui-toggle pristine="" label="Disable Breath Square" name="disableBreathing"></uui-toggle>
-        </uui-form-layout-item>
-
-         <uui-form-layout-item>
-            <uui-toggle pristine="" label="Blue Screen" name="blueScreen"></uui-toggle>
-        </uui-form-layout-item>
-
-        <uui-form-layout-item>
-            <uui-toggle pristine="" label="Hydration Time" name="hydration"></uui-toggle>
-        </uui-form-layout-item>
-         <uui-button type="submit" label="Submit" look="primary">
-        Save
-      </uui-button>
-        </form>
-        </<uui-form>
+              <uui-button type="submit" label="Save" look="primary">
+                Save Settings
+              </uui-button>
+            </form>
+          </uui-form>
         </uui-box>
 
-        	<div slot="actions">
-            <uui-button id="close" label="Close" @click="${this._rejectModal}" look="secondary" color="default">Close</uui-button>
-				</div>
+        <div slot="actions">
+          <uui-button id="close" label="Close" @click="${this._closeModel}" look="secondary" color="default">Close</uui-button>
+        </div>
       </umb-body-layout>
-        `;
+    `;
   }
+
+  private _onToggleChange(e: Event) {
+    const toggle = e.target as any;
+    this._isDisableCountdownChecked = toggle.checked;
+
+    // Dispatch event to notify header app about the toggle change
+    window.dispatchEvent(new CustomEvent('countdown-toggle-changed', {
+      detail: { disabled: this._isDisableCountdownChecked }
+    }));
+  }
+
+  private _closeModel() {
+    // Dispatch the event that headerapp.element.ts is listening for
+    window.dispatchEvent(new CustomEvent('headerapp-modal-closed'));
+    this._rejectModal();
+  }
+
 }
+
 
 export default headerappModal;
 
 declare global {
   interface HTMLElementTagNameMap {
-    'headerapp-model': headerappModal;
+    'headerapp-modal': headerappModal;
   }
 }

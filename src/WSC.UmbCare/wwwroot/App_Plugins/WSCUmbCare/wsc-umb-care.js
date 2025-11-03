@@ -3,14 +3,14 @@ const a = [
     name: "WSCUmb Care Entrypoint",
     alias: "WSC.UmbCare.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-CDySAYsf.js")
+    js: () => import("./entrypoint-C6eUrOZ-.js")
   }
 ], e = [
   {
     name: "WSCUmb Care Dashboard",
     alias: "WSC.UmbCare.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-DqAv9Dpy.js"),
+    js: () => import("./dashboard.element-HhSnFenQ.js"),
     meta: {
       label: "Example Dashboard",
       pathname: "example-dashboard"
@@ -26,19 +26,19 @@ const a = [
   type: "modal",
   alias: "breath-modal",
   name: "Breath Modal",
-  js: () => import("./breath-modal.element-B4n2egmf.js")
+  js: () => import("./breath-modal.element-Bn-Tr4QJ.js")
 }, o = [t], n = {
   type: "modal",
   alias: "headerapp-modal",
   name: "Headerapp Modal",
-  js: () => import("./headerapp-modal.element-BpxtRvsF.js")
+  js: () => import("./headerapp-modal.element-DXI3_Wpt.js")
 }, m = [n], s = [
   {
     type: "headerApp",
     alias: "WSCUmbCare.HeaderApp",
     name: "WSCUmbCare Header App",
     kind: "button",
-    element: () => import("./headerapp.element-6n9LvbLE.js"),
+    element: () => import("./headerapp.element-RaQN3WxF.js"),
     meta: {
       label: "WSCUmbCare",
       icon: "icon-brain",

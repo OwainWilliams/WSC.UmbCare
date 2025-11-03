@@ -1,17 +1,17 @@
 {
   "name": "wsc-umb-care",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "watch": "tsc && vite build --watch",
     "build": "tsc && vite build",
-    "generate-client": "node scripts/generate-openapi.js 'https://localhost:44301'/umbraco/swagger/wscumbcare/swagger.json"
+    "generate-client": "node scripts/generate-openapi.js https://localhost:44301/umbraco/swagger/wscumbcare/swagger.json"
   },
   "devDependencies": {
-    "@hey-api/client-fetch": "^0.4.2",
-    "@hey-api/openapi-ts": "^0.53.11",
-    "@umbraco-cms/backoffice": "^*",
+    "@hey-api/client-fetch": "0.13.1",
+    "@hey-api/openapi-ts": "0.81.1",
+    "@umbraco-cms/backoffice": "^16.3.4",
     "chalk": "^5.3.0",
     "cross-env": "^7.0.3",
     "node-fetch": "^3.3.2",

@@ -2,17 +2,16 @@ import { html as n, customElement as i } from "@umbraco-cms/backoffice/external/
 import { UmbModalBaseElement as c } from "@umbraco-cms/backoffice/modal";
 import "./breathing-countdown-DgocN1ko.js";
 var u = Object.getOwnPropertyDescriptor, m = (e, t, o, r) => {
-  for (var l = r > 1 ? void 0 : r ? u(t, o) : t, a = e.length - 1, d; a >= 0; a--)
-    (d = e[a]) && (l = d(l) || l);
-  return l;
+  for (var a = r > 1 ? void 0 : r ? u(t, o) : t, l = e.length - 1, d; l >= 0; l--)
+    (d = e[l]) && (a = d(a) || a);
+  return a;
 };
 let s = class extends c {
   constructor() {
     super();
   }
   handleClose() {
-    var e;
-    (e = this.modalContext) == null || e.reject({ type: "close" });
+    window.dispatchEvent(new CustomEvent("headerapp-modal-closed")), this._rejectModal();
   }
   connectedCallback() {
     var e;
@@ -44,4 +43,4 @@ export {
   s as breathModal,
   v as default
 };
-//# sourceMappingURL=breath-modal.element-B4n2egmf.js.map
+//# sourceMappingURL=breath-modal.element-Bn-Tr4QJ.js.map
